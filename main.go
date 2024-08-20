@@ -92,3 +92,4 @@ func main() {
 	time.Sleep(duration)
 	color.Green("Server is online at ws://%s:%s", localIP, port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
+}
