@@ -11,15 +11,13 @@ import (
 	"time"
 )
 
-var (
-	upgrader = websocket.Upgrader{
-		ReadBufferSize:  1024,
-		WriteBufferSize: 1024,
-		CheckOrigin: func(r *http.Request) bool {
-			return true
-		},
-	}
-)
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
+}
 
 func GetLocalIP() net.IP {
 	conn, err := net.Dial("udp", "8.8.8.8:80")
@@ -70,7 +68,6 @@ func websocketHandler(w http.ResponseWriter, r *http.Request) {
 
 		err = conn.WriteMessage(websocket.TextMessage, message)
 		if err != nil {
-			// Error occurred while writing message
 			currentTime := time.Now().Format("2006-01-02 15:04:05")
 			logMessage := fmt.Sprintf("[%s][%s] : %s", currentTime, clientIP, err)
 
@@ -81,11 +78,12 @@ func websocketHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	localIP := GetLocalIP().String()
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = ":8080"
 	}
+
+	localIP := GetLocalIP().String()
 	fullURL := fmt.Sprintf("ws://%s%s", localIP, port)
 
 	fmt.Printf("[Starting server on %s ...]\n", fullURL)
