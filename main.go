@@ -80,16 +80,15 @@ func websocketHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080" // Port default sans le préfixe ":"
+		port = "10000"
 	}
 
 	localIP := GetLocalIP().String()
-	fullURL := fmt.Sprintf("ws://%s:%s", localIP, port)
-
-	fmt.Printf("[Starting server on %s ...]\n", fullURL)
+	fmt.Printf("[Starting server on %s ...]\n", port)
 	http.HandleFunc("/ws", websocketHandler)
 	duration := time.Duration(2) * time.Second
 	time.Sleep(duration)
 	color.Green("Server is online at ws://%s:%s", localIP, port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
+
